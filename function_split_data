@@ -1,0 +1,41 @@
+SplitData <- function(data, cl = NULL,column = FALSE,row=FALSE){
+  if(is.null(cl)){stop("you don't have definit nomber of cluster")}
+  if(column == TRUE & row  == TRUE){ stop("chose column OR row")}
+  if(column == FALSE & row  == FALSE){ stop("chose column OR row")}
+  if(row == TRUE){
+    Objet <- rep(list(0), cl)
+    SEP <- floor(nrow(data) / cl)
+    SEQ <- seq(1, nrow(data), by = SEP)
+    if(SEQ[cl] < nrow(data)){
+        SEQ  = c(SEQ, nrow(data))
+    }
+    for(i in 1:(cl)){
+      if(i != cl){
+        Objet[[i]] = data[SEQ[i]:((SEQ[i+1])-1), ]
+      }
+      if(i == cl){
+        Objet[[i]] = data[SEQ[i]:(SEQ[i+1]), ]
+      }
+      
+    }
+    return(Objet)
+  }
+  if(column == TRUE){
+    Objet <- rep(list(0), cl)
+    SEP <- floor(ncol(data)/cl)
+    SEQ <- seq(1, ncol(data), by=SEP)
+    if(SEQ[cl] < ncol(data)){
+      SEQ  = c(SEQ,ncol(data))
+    }
+    for(i in 1:(cl)){
+      if(i != cl){
+        Objet[[i]] = data[, SEQ[i]:((SEQ[i+1])-1)]
+      }
+      if(i == cl){
+        Objet[[i]] = data[, SEQ[i]:(SEQ[i+1])]
+      }
+      
+    }
+    return(Objet)
+  }
+}
